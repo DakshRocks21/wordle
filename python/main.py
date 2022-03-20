@@ -1,6 +1,5 @@
 import json, random, os
 from sys import platform
-import os
 class Wordle():
     def __init__(self):
         if platform == "linux" or platform == "linux2" or platform == "darwin":
@@ -46,7 +45,7 @@ class Wordle():
                 else:
                     print(word[i], end=" ")
             print("\n\n")
-            
+
 
     def start(self):
         self.turns = 3

@@ -37,7 +37,24 @@ class Wordle():
             print("\nYou won!\n\n")
             self.isGameOver = True
         else:
-            print("incorrect")
-            ## ADD CODE HERE
+            for i in range(len(word)):
+                if word[i] == self.word[i]:
+                    self.color("green", word[i])
+                elif word[i] in self.word:
+                    self.color("yellow", word[i])
+                else:
+                    print(word[i], end=" ")
+            print("\n\n")
+
+
+    def start(self):
+        self.turns = 3
+        self.isGameOver = False
+        self.getWord()
+        for i in range(self.turns):
+            self.checkWord(self.getInput())
+            if self.isGameOver == True:
+                break
 os.system("clear")
 wordle = Wordle()
+wordle.start()

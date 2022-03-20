@@ -1,5 +1,10 @@
 import json, random, os
 from sys import platform
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> parent of e9c54f8 (Added Colors)
 class Wordle():
     def __init__(self):
         if platform == "linux" or platform == "linux2" or platform == "darwin":
@@ -8,13 +13,11 @@ class Wordle():
             self.word_list = json.load(open("python\words.json"))
         else:
             print("Unknown platform")
-            exit()
-
         
     def getWord(self):
         word = self.word_list[random.randint(0, len(self.word_list) - 1)]
-        self.word = word
         return word
+<<<<<<< HEAD
 
 
     def getInput(self):
@@ -58,3 +61,10 @@ class Wordle():
 os.system("clear")
 wordle = Wordle()
 wordle.start()
+=======
+
+
+
+wordle = Wordle()
+print(wordle.getWord())
+>>>>>>> parent of e9c54f8 (Added Colors)

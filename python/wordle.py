@@ -22,9 +22,10 @@ class Wordle():
         return user
 
     def color(self, color:str, letter:str):
-        # need to figure it out
-        print(letter, end=" ")
-    
+        if color == "green":
+            print(f"\033[92m{letter}\033[00m", end=" ")
+        elif color == "yellow":
+            print(f"\033[93m{letter}\033[00m", end=" ")
 
     def checkWord(self, word: str):
         if word == self.word:

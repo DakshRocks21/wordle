@@ -5,7 +5,6 @@ import sys
 from colorama import Fore, Style, init
 
 init(autoreset=True)
-
 class Wordle:
     def __init__(self):
         if sys.platform in ["linux", "linux2", "darwin"]:
@@ -32,23 +31,34 @@ class Wordle:
         else:
             print(Fore.LIGHTBLACK_EX + letter.upper(), end=" ")
 
-    def check_word(self, word: str):
+    def check_word(self, guess: str):
         print("\n" + "-"*30)
-        if word == self.word:
-            for i in word:
-                self.color("green", i)
-            print("\n" + Fore.GREEN + Style.BRIGHT + "\nCongratulations! You guessed the word!\n")
-            return True
-        else:
-            for i in range(len(word)):
-                if word[i] == self.word[i]:
-                    self.color("green", word[i])
-                elif word[i] in self.word:
-                    self.color("yellow", word[i])
+        correct_word = list(self.word)
+        guess_word = list(guess)
+        result = [''] * 5
+
+        # First pass: Check for correct (green) letters
+        for i in range(5):
+            if guess_word[i] == correct_word[i]:
+                result[i] = 'green'
+                correct_word[i] = None  # Mark this letter as used
+
+        # Second pass: Check for present (yellow) letters
+        for i in range(5):
+            if result[i] == '':
+                if guess_word[i] in correct_word:
+                    result[i] = 'yellow'
+                    correct_word[correct_word.index(guess_word[i])] = None  # Mark this letter as used
                 else:
-                    self.color("grey", word[i])
-            print("\n" + "-"*30 + "\n")
-            return False
+                    result[i] = 'grey'
+
+        # Display the result
+        for i in range(5):
+            self.color(result[i], guess_word[i])
+
+        print("\n" + "-"*30)
+
+        return guess == self.word
 
     def start(self):
         os.system('cls' if os.name == 'nt' else 'clear')

@@ -1,5 +1,6 @@
 import json
 import random
+import os
 import sys
 from colorama import Fore, Style, init
 
@@ -15,11 +16,13 @@ class Wordle:
             print("Unknown platform")
             sys.exit()
 
-        self.turns = 6
+        self.turns = 6  # Set the number of turns
         self.word = None
 
-    def set_word(self, word: str):
-        self.word = word.lower()
+    def get_word(self):
+        word = self.word_list[random.randint(0, len(self.word_list) - 1)]
+        self.word = word
+        return word
 
     def color(self, color: str, letter: str):
         if color == "green":
@@ -29,16 +32,34 @@ class Wordle:
         else:
             print(Fore.LIGHTBLACK_EX + letter.upper(), end=" ")
 
-    def check_word(self, guess: str):
-        correct_guess = True
-        for i in range(len(guess)):
-            if guess[i] == self.word[i]:
-                self.color("green", guess[i])
-            elif guess[i] in self.word:
-                self.color("yellow", guess[i])
-                correct_guess = False
-            else:
-                self.color("grey", guess[i])
-                correct_guess = False
-        print()  # Newline after the word
-        return correct_guess
+    def check_word(self, word: str):
+        print("\n" + "-"*30)
+        if word == self.word:
+            for i in word:
+                self.color("green", i)
+            print("\n" + Fore.GREEN + Style.BRIGHT + "\nCongratulations! You guessed the word!\n")
+            return True
+        else:
+            for i in range(len(word)):
+                if word[i] == self.word[i]:
+                    self.color("green", word[i])
+                elif word[i] in self.word:
+                    self.color("yellow", word[i])
+                else:
+                    self.color("grey", word[i])
+            print("\n" + "-"*30 + "\n")
+            return False
+
+    def start(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(Fore.MAGENTA + Style.BRIGHT + "Welcome to Wordle!")
+        print("Guess the 5-letter word within 6 attempts.\n")
+
+        self.get_word()
+        self.isGameOver = False
+
+        for i in range(self.turns):
+            if self.check_word(self.get_input()):
+                break
+        else:
+            print(Fore.RED + Style.BRIGHT + f"\nGame Over! The correct word was: {self.word.upper()}\n")
